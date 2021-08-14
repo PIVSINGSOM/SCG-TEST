@@ -1,0 +1,30 @@
+version: "3"
+services:
+  mysql:
+    image: mysql:5.7
+    container_name: scg_test_mysql
+    ports:
+      - 3306:3306
+    volumes:
+      - "./data:/var/lib/mysql"
+    environment:
+      - MYSQL_ROOT_PASSWORD=scgtest
+      - TZ=Asia/Bangkok  #set time zone mysql to bangkok
+    networks:
+      - scg_test_site
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: pma_scg_test
+    ports:
+      - 8001:80
+    links:
+      - mysql
+    environment:
+      # PMA_PASSWORD: 1234
+      # PMA_USER: root
+      PMA_HOSTS: mysql
+      PMA_PORTS: 3306
+    networks:
+      - scg_test_site
+networks:
+  scg_test_site:
