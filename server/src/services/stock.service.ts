@@ -2,11 +2,27 @@ import DB from '@databases';
 import { stockAttributes, stockCreationAttributes } from '@/models/stock';
 import { HttpException } from '@/exceptions/HttpException';
 import { isEmpty } from '@/utils/util';
+import { Op } from 'sequelize';
 class StockService {
   public stock = DB.stock;
 
-  public async index(): Promise<stockAttributes[]> {
-    const resultList = await this.stock.findAll({});
+  public async index(machineId: number): Promise<stockAttributes[]> {
+    const resultList = await this.stock.findAll({
+      include: [
+        {
+          model: DB.product,
+          as: 'product',
+        },
+      ],
+      where: {
+        machine_id: {
+          [Op.eq]: machineId,
+        },
+        quantity: {
+          [Op.not]: 0,
+        },
+      },
+    });
     return resultList;
   }
 
@@ -38,7 +54,7 @@ class StockService {
 
     findStock.quantity = findStock.quantity - quantity;
 
-    await this.stock.update({ ...findStock }, { where: { id: stockId } });
+    await this.stock.update({ quantity: findStock.quantity }, { where: { id: findStock.id } });
 
     const updateQuantityData: stockAttributes = await this.stock.findByPk(stockId);
     if (updateQuantityData.quantity < 10) {

@@ -16,6 +16,16 @@ class MachineService {
     return resultList;
   }
 
+  public async profile(machineId: number): Promise<machineAttributes> {
+    const resultList: machineAttributes = await this.machine.findOne({
+      attributes: { exclude: ['password'] },
+      where: {
+        id: machineId,
+      },
+    });
+    return resultList;
+  }
+
   // public async findUserById(userId: number): Promise<User> {
   //   if (isEmpty(userId)) throw new HttpException(400, "You're not userId");
 

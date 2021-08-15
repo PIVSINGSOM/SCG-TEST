@@ -6,7 +6,7 @@ import { HttpException } from '@/exceptions/HttpException';
 class ProductService {
   public product = DB.product;
 
-  public async index(): Promise<productAttributes[]> {
+  public async index(machineId: number): Promise<productAttributes[]> {
     const resultList = await this.product.findAll({});
     return resultList;
   }

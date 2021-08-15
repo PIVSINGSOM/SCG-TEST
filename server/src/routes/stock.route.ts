@@ -2,6 +2,7 @@ import { Router } from 'express';
 import MachineController from '@/controllers/machine.controller';
 import { Routes } from '@interfaces/routes.interface';
 import StockController from '@/controllers/stock.controller';
+import authMiddleware from '@/middlewares/auth.middleware';
 class StockRoute implements Routes {
   public path = '/stock';
   public router = Router();
@@ -12,7 +13,7 @@ class StockRoute implements Routes {
   }
 
   private initializeRoutes() {
-    this.router.get(`${this.path}`, this.stockController.index);
+    this.router.get(`${this.path}`, authMiddleware, this.stockController.index);
     this.router.post(`${this.path}`, this.stockController.createStock);
   }
 }

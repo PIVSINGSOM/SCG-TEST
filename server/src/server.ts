@@ -9,8 +9,17 @@ import validateEnv from '@utils/validateEnv';
 import ProductRoute from '@routes/product.route';
 import MachineRoute from '@routes/machine.route';
 import StockRoute from '@routes/stock.route';
+import PaymentRoute from '@routes/payment.route';
 validateEnv();
 
-const app = new App([new IndexRoute(), new UsersRoute(), new AuthRoute(), new ProductRoute(), new MachineRoute(), new StockRoute()]);
+const app = new App([
+  new IndexRoute(),
+  new UsersRoute(),
+  new AuthRoute(),
+  new ProductRoute(),
+  new MachineRoute(),
+  new StockRoute(),
+  new PaymentRoute(),
+]);
 
 app.listen();

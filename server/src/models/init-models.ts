@@ -9,6 +9,8 @@ import { product } from "./product";
 import type { productAttributes, productCreationAttributes } from "./product";
 import { stock } from "./stock";
 import type { stockAttributes, stockCreationAttributes } from "./stock";
+import { user } from "./user";
+import type { userAttributes, userCreationAttributes } from "./user";
 
 export {
   machine,
@@ -16,6 +18,7 @@ export {
   payment,
   product,
   stock,
+  user,
 };
 
 export type {
@@ -29,6 +32,8 @@ export type {
   productCreationAttributes,
   stockAttributes,
   stockCreationAttributes,
+  userAttributes,
+  userCreationAttributes,
 };
 
 export function initModels(sequelize: Sequelize) {
@@ -37,6 +42,7 @@ export function initModels(sequelize: Sequelize) {
   payment.initModel(sequelize);
   product.initModel(sequelize);
   stock.initModel(sequelize);
+  user.initModel(sequelize);
 
   payment.belongsTo(machine, { as: "machine", foreignKey: "machine_id"});
   machine.hasMany(payment, { as: "payments", foreignKey: "machine_id"});
@@ -55,5 +61,6 @@ export function initModels(sequelize: Sequelize) {
     payment: payment,
     product: product,
     stock: stock,
+    user: user,
   };
 }

@@ -2,12 +2,14 @@ import { NextFunction, Request, Response } from 'express';
 import ProductService from '@/services/product.service';
 import { productAttributes, productCreationAttributes } from '@/models/product';
 import { RequestWithMachine } from '@/interfaces/auth.interface';
+import { machineAttributes } from '@/models/machine';
 class ProductController {
   public productService = new ProductService();
 
   public index = async (req: RequestWithMachine, res: Response, next: NextFunction) => {
     try {
-      const dataList: productAttributes[] = await this.productService.index();
+      const machine: machineAttributes = req.machine;
+      const dataList: productAttributes[] = await this.productService.index(machine.id);
       res.status(200).json({ data: dataList, message: '' });
     } catch (error) {
       next(error);

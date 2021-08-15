@@ -1,12 +1,15 @@
 import { NextFunction, Request, Response } from 'express';
 import StockService from '@/services/stock.service';
 import { stockAttributes, stockCreationAttributes } from '@/models/stock';
+import { RequestWithMachine } from '@/interfaces/auth.interface';
+import { machineAttributes } from '@/models/machine';
 class StockController {
   public stockService = new StockService();
 
-  public index = async (req: Request, res: Response, next: NextFunction) => {
+  public index = async (req: RequestWithMachine, res: Response, next: NextFunction) => {
     try {
-      const dataList: stockAttributes[] = await this.stockService.index();
+      const machine: machineAttributes = req.machine;
+      const dataList: stockAttributes[] = await this.stockService.index(machine.id);
 
       res.status(200).json({ data: dataList, message: 'findAll' });
     } catch (error) {
