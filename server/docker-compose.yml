@@ -34,6 +34,16 @@ services:
       - mysql
     depends_on:
       - mysql
+  email-server:
+    build:
+      context: ./email-server/
+      dockerfile: Dockerfile
+    container_name: scg_test_email_server
+    restart: 'unless-stopped'
+    ports:
+      - '3001:3001'
+    networks:
+      - backend
   mysql:
     image: mysql:5.7
     container_name: scg_test_mysql

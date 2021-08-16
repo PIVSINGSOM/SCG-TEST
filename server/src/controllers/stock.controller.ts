@@ -17,11 +17,41 @@ class StockController {
     }
   };
 
-  public createStock = async (req: Request, res: Response, next: NextFunction) => {
+  public getListStockByMachine = async (req: RequestWithMachine, res: Response, next: NextFunction) => {
+    try {
+      const machineId: number = Number(req.params.id);
+      const dataList: stockAttributes[] = await this.stockService.getListStockByMachine(machineId);
+      res.status(200).json({ data: dataList, message: 'findAll' });
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  public createStock = async (req: RequestWithMachine, res: Response, next: NextFunction) => {
     try {
       const stockData: stockCreationAttributes = req.body;
       const createStockData: stockAttributes = await this.stockService.createStock(stockData);
       res.status(201).json({ data: createStockData, message: 'created' });
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  public increaseStock = async (req: RequestWithMachine, res: Response, next: NextFunction) => {
+    try {
+      const stockData: stockCreationAttributes = req.body;
+      const createStockData: stockAttributes = await this.stockService.increaseQuantity(stockData.id, stockData.quantity);
+      res.status(201).json({ data: createStockData, message: 'updated' });
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  public deleteStock = async (req: RequestWithMachine, res: Response, next: NextFunction) => {
+    try {
+      const stockId: number = Number(req.params.id);
+      const result: Boolean = await this.stockService.deleteStock(stockId);
+      res.status(201).json({ success: result, message: 'deleted' });
     } catch (error) {
       next(error);
     }

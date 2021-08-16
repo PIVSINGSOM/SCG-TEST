@@ -14,7 +14,10 @@ class StockRoute implements Routes {
 
   private initializeRoutes() {
     this.router.get(`${this.path}`, authMiddleware, this.stockController.index);
-    this.router.post(`${this.path}`, this.stockController.createStock);
+    this.router.get(`${this.path}/machine/:id(\\d+)`, authMiddleware, this.stockController.getListStockByMachine);
+    this.router.post(`${this.path}`, authMiddleware, this.stockController.createStock);
+    this.router.put(`${this.path}`, authMiddleware, this.stockController.increaseStock);
+    this.router.delete(`${this.path}/:id(\\d+)`, authMiddleware, this.stockController.deleteStock);
   }
 }
 
